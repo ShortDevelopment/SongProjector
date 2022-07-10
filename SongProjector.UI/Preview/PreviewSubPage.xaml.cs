@@ -1,6 +1,8 @@
 ﻿using SongProjector.Media;
 using SongProjector.UI;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace SongProjector.Preview
@@ -27,14 +29,15 @@ namespace SongProjector.Preview
         async void GeneratePreviewItems()
         {
             PreviewItems.Clear();
-            for (int i = 0; i < CurrentMedia.SlideCount; i++)
+
+            await Task.WhenAll(Enumerable.Range(0, CurrentMedia.SlideCount).Select(async (i) =>
             {
                 PreviewItems.Add(new()
                 {
                     Title = $"Slide {i + 1}",
                     PreviewContent = await CurrentMedia.GeneratePreviewAsync(i)
                 });
-            }
+            }));
         }
 
         private void SelectionGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
