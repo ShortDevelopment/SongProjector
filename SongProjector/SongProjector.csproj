@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<Platforms>x86;x64</Platforms>
+		<AssetTargetFallback>uap10.0.19041</AssetTargetFallback>
+		<TargetPlatformVersion>10.0.19041</TargetPlatformVersion>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<ApplicationIcon>logo.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="logo.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Toolkit.Win32.UI.SDK" Version="6.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SongProjector.UI\SongProjector.UI.csproj" />
+	</ItemGroup>
+
+</Project>
