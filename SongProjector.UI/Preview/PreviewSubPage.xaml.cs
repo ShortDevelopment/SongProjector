@@ -46,7 +46,7 @@ namespace SongProjector.Preview
             MainPage.PresentationManager?.Presentation.Present(CurrentMedia, SelectionGridView.SelectedIndex);
         }
 
-        public void Blank()
+        public void DeselectPreviewItem()
         {
             SelectionGridView.SelectedItem = null;
         }
