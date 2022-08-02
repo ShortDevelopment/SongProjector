@@ -1,4 +1,4 @@
-﻿using ShortDev.Uwp.FullTrust.Core.Xaml;
+﻿using ShortDev.Uwp.FullTrust.Xaml;
 using ShortDev.Windows.Uwp.Presentation;
 using System;
 using System.Linq;
@@ -62,7 +62,7 @@ namespace SongProjector.Presentation
                 // _window.GetSubclass().WindowPrivate.MoveWindow((int)_displayBounds.X, (int)_diplayBounds.Y, (int)_displayBounds.Width, (int)_displayBounds.Height);
                 const int SWP_NOACTIVATE = 0x0010;
                 const int SWP_NOZORDER = 0x0004;
-                SetWindowPos(XamlWindowExtensions.GetHwnd(_window), IntPtr.Zero, (int)_displayBounds.X, (int)_displayBounds.Y, (int)_displayBounds.Width, (int)_displayBounds.Height, SWP_NOACTIVATE | SWP_NOZORDER);
+                SetWindowPos(_window.GetHwnd(), IntPtr.Zero, (int)_displayBounds.X, (int)_displayBounds.Y, (int)_displayBounds.Width, (int)_displayBounds.Height, SWP_NOACTIVATE | SWP_NOZORDER);
 
                 SetForegroundWindow(mainWindowHwnd);
 

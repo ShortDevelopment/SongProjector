@@ -1,6 +1,4 @@
-﻿using ShortDev.Uwp.FullTrust.Core.Xaml;
-using System.Threading;
-using Windows.UI.Core;
+﻿using Windows.UI.Xaml;
 
 namespace SongProjector
 {
@@ -8,16 +6,7 @@ namespace SongProjector
     {
         public static void Main(string[] args)
         {
-            new XamlApplicationWrapper(() => null); // Dummy instance to make api happy
-            var app = new App();
-            Thread mainWindowThread = new(() =>
-            {
-                var window = XamlWindowActivator.CreateNewWindow(new("SongProjector"));
-                app.LaunchInternal();
-                window.CoreWindow.Dispatcher.ProcessEvents(CoreProcessEventsOption.ProcessUntilQuit);
-            });
-            mainWindowThread.Start();
-            mainWindowThread.Join();
+            FullTrustApplication.Start(_ => new App(), new("SongProjector"));
         }
     }
 }
