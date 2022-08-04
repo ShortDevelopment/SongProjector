@@ -5,6 +5,6 @@ namespace SongProjector.Presentation
     internal interface IPresentation
     {
         void Present(IMedia media, int slideIndex);
-        void Blank();
+        void Blank(IMedia media);
     }
 }

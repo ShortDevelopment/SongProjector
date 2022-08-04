@@ -150,8 +150,11 @@
                 </Grid.RowDefinitions>
                 <muxc:NavigationViewItemHeader Content="Schedule" />
                 <ListView x:Name="ScheduleListView" SelectionMode="Single"
-                          
+                          CanReorderItems="True"
+                          CanDragItems="True"
+                          AllowDrop="True"
                         Grid.Row="1">
+                    
                 </ListView>
             </Grid>
             <Grid Grid.Column="1" Margin="5,10,0,0" ScrollViewer.VerticalScrollMode="Auto">

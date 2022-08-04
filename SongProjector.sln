@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongProjector.UI", "SongPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongProjector", "SongProjector\SongProjector.csproj", "{077B146B-5A03-4FE3-8F1F-B04F589A7599}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortDev.Windows.Uwp.Presentation", "ShortDev.Windows.Uwp.Presentation\ShortDev.Windows.Uwp.Presentation.csproj", "{47D8EEA3-FBF7-463A-8C1B-2651056C0107}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortDev.Windows.Uwp.Presentation", "ShortDev.Windows.Uwp.Presentation\ShortDev.Windows.Uwp.Presentation.csproj", "{47D8EEA3-FBF7-463A-8C1B-2651056C0107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

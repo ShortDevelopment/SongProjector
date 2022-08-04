@@ -17,7 +17,6 @@ namespace SongProjector.UI
         public MainPage()
         {
             this.InitializeComponent();
-
             ScheduleListView.ItemsSource = collection;
         }
 
@@ -36,7 +35,7 @@ namespace SongProjector.UI
 
         private void BlankButton_Click(object sender, RoutedEventArgs e)
         {
-            PresentationManager?.Presentation?.Blank();
+            PresentationManager?.Presentation?.Blank(PreviewPage.CurrentMedia);
             PreviewPage.DeselectPreviewItem();
         }
 
@@ -69,10 +68,10 @@ namespace SongProjector.UI
 
         private async void InsertPptMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            var file = await PickFileAsync(".ppt");
+            var file = await PickFileAsync(".pptx");
             if (file != null)
             {
-                IMedia media = await PdfFileMedia.CreateFromFileAsync(file);
+                IMedia media = await PptMedia.CreateFromFileAsync(file);
                 PreviewPage.CurrentMedia = media;
             }
         }
