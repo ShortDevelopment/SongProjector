@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
@@ -15,25 +17,32 @@ internal class TextMedia : MediaBase, IMedia
     public override int SlideCount
         => 1;
 
-    DispatchableReference<TextBox> _editTextBox;
+    DispatchableReference<TextBlock>? _editTextBlock;
     public Task<FrameworkElement> GeneratePresentationAsync(int slideId, Size? size)
     {
         if (slideId != 0)
             throw new ArgumentOutOfRangeException();
 
-        _editTextBox = _editTextBox ?? new TextBox();
-        _editTextBox.Reference.Foreground = new SolidColorBrush(Colors.White);
-        _editTextBox.Reference.FontSize = 40;
-        return Task.FromResult<FrameworkElement>(_editTextBox);
+        _editTextBlock = _editTextBlock ?? new TextBlock();
+        _editTextBlock.Reference.Foreground = new SolidColorBrush(Colors.White);
+        _editTextBlock.Reference.FontSize = 40;
+        return Task.FromResult<FrameworkElement>(_editTextBlock);
     }
 
-    DispatchableReference<TextBlock> _previewTextBlock;
+    DispatchableReference<TextBox>? _previewTextBox;
     public Task<FrameworkElement> GeneratePreviewAsync(int slideId)
     {
         if (slideId != 0)
             throw new ArgumentOutOfRangeException();
 
-        _previewTextBlock = _previewTextBlock ?? new TextBlock();
-        return Task.FromResult<FrameworkElement>(_previewTextBlock);
+        if (_previewTextBox == null)
+        {
+            _previewTextBox = new TextBox();
+            _previewTextBox.Reference.TextChanged += (s, e) =>
+            {
+                _editTextBlock?.Do((value) => value.Text = _previewTextBox.Reference.Text);
+            };
+        }
+        return Task.FromResult<FrameworkElement>(_previewTextBox);
     }
 }

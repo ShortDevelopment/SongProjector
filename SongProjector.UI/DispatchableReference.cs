@@ -9,7 +9,7 @@ internal sealed class DispatchableReference<T>
     private DispatchableReference(T reference, CoreDispatcher dispatcher)
     {
         Reference = reference;
-        Dispatcher = dispatcher;
+        _dispatcher = dispatcher;
     }
 
     public static DispatchableReference<TObj> Create<TObj>(TObj obj) where TObj : DependencyObject
@@ -18,11 +18,11 @@ internal sealed class DispatchableReference<T>
     public static DispatchableReference<TObj> Create<TObj>(TObj obj, CoreDispatcher dispatcher)
         => new(obj, dispatcher);
 
-    public CoreDispatcher Dispatcher { get; }
+    readonly CoreDispatcher _dispatcher;
     public T Reference { get; }
 
     public void Do(Action<T> action)
-        => _ = Dispatcher.RunIdleAsync((x) => action?.Invoke(Reference));
+        => _ = _dispatcher.RunIdleAsync((x) => action?.Invoke(Reference));
 
     public static implicit operator DispatchableReference<T>(T obj)
     {
