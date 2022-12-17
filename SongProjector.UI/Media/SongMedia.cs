@@ -4,9 +4,13 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.UI.Xaml.Controls;
+using SongProjector.Presentation;
 using SongProjector.Preview;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -17,10 +21,7 @@ using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace SongProjector.Media;
@@ -41,7 +42,7 @@ internal class SongMedia : MediaBase, IMedia
 
     public override int SlideCount
         => _songBeamerFile.Sections.Count;
-    public async Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
+    public async Task<PresentationResult> GeneratePresentationAsync(RenderContext context)
     {
         var dpi = DisplayInformation.GetForCurrentView().RawDpiX;
 
@@ -71,7 +72,7 @@ internal class SongMedia : MediaBase, IMedia
 
         using (CanvasTextLayout layout = new(resourceCreator, lineContent, format, (float)space.Width, (float)space.Height))
         {
-            var drawingSize = layout.DrawBounds.ToSize();
+            var drawingSize = layout.LayoutBoundsIncludingTrailingWhitespace.ToSize();
 
             var dX = drawingSize.Width / space.Width;
             var dY = drawingSize.Height / space.Height;
@@ -95,7 +96,7 @@ internal class SongMedia : MediaBase, IMedia
 
         var session = renderTarget.CreateDrawingSession();
         {
-            session.Clear(Colors.Green);
+            session.Clear(Colors.Transparent);
 
             Vector2 position = new(Margin, Margin);
             using (var layout = GenerateTextLayout(session, content, new Size(size.Width - Margin * 2, size.Height - Margin * 2)))
@@ -113,7 +114,6 @@ internal class SongMedia : MediaBase, IMedia
 
         InMemoryRandomAccessStream stream = new();
         await renderTarget.SaveAsync(stream, CanvasBitmapFileFormat.Png);
-        await renderTarget.SaveAsync(@"C:\Users\lukas\Desktop\test.jpg", CanvasBitmapFileFormat.Png);
 
         BitmapImage result = new();
         result.SetSource(stream);
@@ -127,7 +127,7 @@ internal class SongMedia : MediaBase, IMedia
         return new()
         {
             Title = _songBeamerFile.Sections[context.SlideId].Title,
-            Content = content
+            Content = content.Content
         };
     }
 }
@@ -140,24 +140,22 @@ class SongBeamerFile
     public static SongBeamerFile Parse(string[] lines)
     {
         SongBeamerFile result = new();
-        Section section = new();
+
+        List<Section> sections = new();
+        Section section = new(result);
         foreach (var line in lines)
         {
             if (line.StartsWith("#") && line.Contains("="))
             {
                 var keyValue = line.Split('=');
-                result.Properties.TryAdd(keyValue[0], keyValue[1]);
+                result.Properties.TryAdd(keyValue[0].Replace("#", null), keyValue[1]);
             }
-            else if (line.StartsWith("<"))
-            {
-                // ToDo
-            }
-            else if (line == "--" || line == "---")
+            else if (line.StartsWith("--"))
             {
                 bool newSection = line == "---";
                 if (section.Lines.Count > 0)
-                    result.Sections.Add(section);
-                section = new();
+                    sections.Add(section);
+                section = new(result);
             }
             else
             {
@@ -186,7 +184,11 @@ class SongBeamerFile
             }
         }
         if (section.Lines.Count > 0)
-            result.Sections.Add(section);
+            sections.Add(section);
+
+        result.AllSections = sections.AsReadOnly();
+        result.Sections = result.GetOrderedSections(sections);
+
         return result;
     }
 
@@ -201,6 +203,8 @@ class SongBeamerFile
     };
 
     static readonly Regex ContentLineRegex = new(@"^(#(\d) )?(<(.*):(.+)>)?(.*)$", RegexOptions.Compiled);
+
+    private SongBeamerFile() { }
 
     #region Properties
     public Dictionary<string, string> Properties { get; } = new();
@@ -220,17 +224,44 @@ class SongBeamerFile
     #endregion
 
     #region Content
-    public class Section
+    public sealed class Section
     {
+        readonly SongBeamerFile _file;
+        public Section(SongBeamerFile file)
+            => _file = file;
+
         public string? Title { get; set; }
         public List<Line> Lines { get; } = new();
 
-        public string GetContent()
-            => string.Join("\n", Lines.Select((x) => x.Content));
+        public string GetContent(int langId = 1)
+        {
+            var langCount = _file.TryGetProp<int>("LangCount");
+            if (langCount < 1)
+                langCount = 1;
+
+            return string.Join("\n", Lines.Where((x, i) => i % langCount == langId - 1).Select((x) => x.Content));
+        }
 
     }
     public record Line(int LanguageId, string Content);
 
-    public List<Section> Sections { get; } = new();
+    [AllowNull]
+    public ReadOnlyCollection<Section> AllSections { get; private set; }
+
+    [AllowNull]
+    public ReadOnlyCollection<Section> Sections { get; private set; }
+
+    ReadOnlyCollection<Section> GetOrderedSections(List<Section> sections)
+    {
+        var verseOrder = TryGetProp("VerseOrder");
+        if (verseOrder == null)
+            return sections.AsReadOnly();
+
+        List<Section> result = new();
+        foreach (var verse in verseOrder.Split(','))
+            result.Add(sections.First(x => x.Title == verse));
+
+        return result.AsReadOnly();
+    }
     #endregion
 }

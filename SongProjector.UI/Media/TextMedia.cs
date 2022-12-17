@@ -1,11 +1,10 @@
 ﻿#nullable enable
 
+using SongProjector.Presentation;
 using SongProjector.Preview;
 using System;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
@@ -19,7 +18,7 @@ internal class TextMedia : MediaBase, IMedia
         => 1;
 
     DispatchableReference<TextBlock>? _editTextBlock;
-    public Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
+    public Task<PresentationResult> GeneratePresentationAsync(RenderContext context)
     {
         if (context.SlideId != 0)
             throw new ArgumentOutOfRangeException();
@@ -27,7 +26,7 @@ internal class TextMedia : MediaBase, IMedia
         _editTextBlock = _editTextBlock ?? new TextBlock();
         _editTextBlock.Reference.Foreground = new SolidColorBrush(Colors.White);
         _editTextBlock.Reference.FontSize = 40;
-        return Task.FromResult<FrameworkElement>(_editTextBlock);
+        return Task.FromResult<PresentationResult>(_editTextBlock.Reference);
     }
 
     DispatchableReference<TextBox>? _previewTextBox;

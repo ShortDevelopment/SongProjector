@@ -133,6 +133,7 @@
     <Compile Include="Media\VideoMedia.cs" />
     <Compile Include="Presentation\IExternalPresentation.cs" />
     <Compile Include="Presentation\IPresentation.cs" />
+    <Compile Include="Presentation\PresentationResult.cs" />
     <Compile Include="Preview\MediaControlControl.xaml.cs">
       <DependentUpon>MediaControlControl.xaml</DependentUpon>
     </Compile>
