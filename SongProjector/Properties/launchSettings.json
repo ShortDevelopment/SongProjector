@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SongProjector": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

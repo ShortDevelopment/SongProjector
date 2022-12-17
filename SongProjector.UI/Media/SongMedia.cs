@@ -20,6 +20,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace SongProjector.Media;
@@ -64,7 +65,8 @@ internal class SongMedia : MediaBase, IMedia
             VerticalAlignment = VerticalAlignment,
             WordWrapping = CanvasWordWrapping.NoWrap,
             FontSize = (float)desiredFontSize,
-            FontFamily = "Calibri"
+            FontFamily = "Inter" // "Assets/Inter-Regular.ttf#Inter"
+            // await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Inter-Regular.ttf"));
         };
 
         using (CanvasTextLayout layout = new(resourceCreator, lineContent, format, (float)space.Width, (float)space.Height))
