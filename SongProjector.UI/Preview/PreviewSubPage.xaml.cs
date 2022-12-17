@@ -2,6 +2,7 @@
 
 using SongProjector.Media;
 using SongProjector.UI;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,14 +36,22 @@ namespace SongProjector.Preview
             if (CurrentMedia == null)
                 return;
 
-            await Task.WhenAll(Enumerable.Range(0, CurrentMedia.SlideCount).Select(async (i) =>
+            var items = await Task.WhenAll(Enumerable.Range(0, CurrentMedia.SlideCount).Select(async (i) =>
             {
-                PreviewItems.Add(new()
+                var preview = await CurrentMedia.GeneratePreviewAsync(new()
                 {
-                    Title = $"Slide {i + 1}",
-                    PreviewContent = await CurrentMedia.GeneratePreviewAsync(i)
+                    SlideId = i,
+                    Size = new(200, 112.5)
                 });
+                return new PreviewItemControl()
+                {
+                    Index = i,
+                    Title = preview.Title ?? $"Slide {i + 1}",
+                    PreviewContent = preview.Content
+                };
             }));
+            foreach (var item in items.OrderBy((x) => x.Index))
+                PreviewItems.Add(item);
         }
 
         private void SelectionGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)

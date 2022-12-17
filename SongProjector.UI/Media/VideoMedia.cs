@@ -22,9 +22,9 @@ namespace SongProjector.Media
             => 1;
 
         List<DispatchableReference<MediaPlayer>> playerRefs = new();
-        public Task<FrameworkElement> GeneratePresentationAsync(int slideId, Size? size)
+        public Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
         {
-            if (slideId != 0)
+            if (context.SlideId != 0)
                 throw new ArgumentOutOfRangeException();
 
             MediaPlayerElement playerEle = new();
@@ -35,9 +35,9 @@ namespace SongProjector.Media
             return Task.FromResult<FrameworkElement>(playerEle);
         }
 
-        public Task<FrameworkElement> GeneratePreviewAsync(int slideId)
+        public Task<PreviewResult> GeneratePreviewAsync(RenderContext context)
         {
-            if (slideId != 0)
+            if (context.SlideId != 0)
                 throw new ArgumentOutOfRangeException();
 
             MediaControlControl control = new();
@@ -60,7 +60,7 @@ namespace SongProjector.Media
                         player.PlaybackSession.Position = TimeSpan.FromMilliseconds(0);
                     });
             };
-            return Task.FromResult<FrameworkElement>(control);
+            return Task.FromResult<PreviewResult>(control);
         }
     }
 }

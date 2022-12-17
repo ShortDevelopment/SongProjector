@@ -26,7 +26,11 @@ namespace SongProjector.Presentation
                 else
                 {
                     Window.Current.GetSubclass().IsTopMost = true;
-                    RenderContainer.Content = await media.GeneratePresentationAsync(slideIndex, null);
+                    RenderContainer.Content = await media.GeneratePresentationAsync(new()
+                    {
+                        SlideId = slideIndex,
+                        Size = new(RenderContainer.ActualWidth, RenderContainer.ActualHeight)
+                    });
                 }
             });
         }

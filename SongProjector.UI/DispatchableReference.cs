@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
@@ -23,6 +24,23 @@ internal sealed class DispatchableReference<T>
 
     public void Do(Action<T> action)
         => _ = _dispatcher.RunIdleAsync((x) => action?.Invoke(Reference));
+
+    public async Task<TResult> GetAsync<TResult>(Func<T, TResult> action)
+    {
+        TaskCompletionSource<TResult> promise = new();
+        _ = _dispatcher.RunIdleAsync(_ =>
+        {
+            try
+            {
+                promise.SetResult(action.Invoke(Reference));
+            }
+            catch (Exception ex)
+            {
+                promise.SetException(ex);
+            }
+        });
+        return await promise.Task;
+    }
 
     public static implicit operator DispatchableReference<T>(T obj)
     {

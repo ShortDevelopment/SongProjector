@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SongProjector.Preview;
+using System;
 using System.Threading.Tasks;
 using Windows.Data.Pdf;
 using Windows.Foundation;
@@ -27,8 +28,9 @@ namespace SongProjector.Media
         public override int SlideCount
             => (int)_doc.PageCount;
 
-        public async Task<FrameworkElement> GeneratePresentationAsync(int slideId, Size? size)
+        public async Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
         {
+            var slideId = context.SlideId;
             if (slideId < 0 || slideId > _doc.PageCount)
                 throw new ArgumentOutOfRangeException();
 
@@ -44,7 +46,7 @@ namespace SongProjector.Media
             return result;
         }
 
-        public async Task<FrameworkElement> GeneratePreviewAsync(int slideId)
-            => await GeneratePresentationAsync(slideId, null);
+        public async Task<PreviewResult> GeneratePreviewAsync(RenderContext context)
+            => await GeneratePresentationAsync(context);
     }
 }

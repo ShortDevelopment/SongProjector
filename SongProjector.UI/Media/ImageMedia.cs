@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SongProjector.Preview;
+using System;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
@@ -18,9 +19,9 @@ namespace SongProjector.Media
         public override int SlideCount
             => 1;
 
-        public Task<FrameworkElement> GeneratePresentationAsync(int slideId, Size? size)
+        public Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
         {
-            if (slideId != 0)
+            if (context.SlideId != 0)
                 throw new ArgumentOutOfRangeException();
 
             Image result = new();
@@ -28,7 +29,7 @@ namespace SongProjector.Media
             return Task.FromResult<FrameworkElement>(result);
         }
 
-        public async Task<FrameworkElement> GeneratePreviewAsync(int slideId)
-            => await GeneratePresentationAsync(slideId, null);
+        public async Task<PreviewResult> GeneratePreviewAsync(RenderContext context)
+            => await GeneratePresentationAsync(context);
     }
 }

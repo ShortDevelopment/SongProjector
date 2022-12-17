@@ -108,6 +108,17 @@ public sealed partial class MainPage : Page
         PreviewPage.CurrentMedia = media;
         collection.Add(media);
     }
+
+    private async void InsertSongButton_Click(object sender, RoutedEventArgs e)
+    {
+        var file = await PickFileAsync(new[] { ".sng", ".txt" });
+        if (file != null)
+        {
+            IMedia media = await SongMedia.CreateFromFileAsync(file);
+            PreviewPage.CurrentMedia = media;
+            collection.Add(media);
+        }
+    }
     #endregion
     #endregion
 

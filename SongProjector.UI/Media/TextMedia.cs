@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using SongProjector.Preview;
 using System;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -18,9 +19,9 @@ internal class TextMedia : MediaBase, IMedia
         => 1;
 
     DispatchableReference<TextBlock>? _editTextBlock;
-    public Task<FrameworkElement> GeneratePresentationAsync(int slideId, Size? size)
+    public Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
     {
-        if (slideId != 0)
+        if (context.SlideId != 0)
             throw new ArgumentOutOfRangeException();
 
         _editTextBlock = _editTextBlock ?? new TextBlock();
@@ -30,9 +31,9 @@ internal class TextMedia : MediaBase, IMedia
     }
 
     DispatchableReference<TextBox>? _previewTextBox;
-    public Task<FrameworkElement> GeneratePreviewAsync(int slideId)
+    public Task<PreviewResult> GeneratePreviewAsync(RenderContext context)
     {
-        if (slideId != 0)
+        if (context.SlideId != 0)
             throw new ArgumentOutOfRangeException();
 
         if (_previewTextBox == null)
@@ -43,6 +44,6 @@ internal class TextMedia : MediaBase, IMedia
                 _editTextBlock?.Do((value) => value.Text = _previewTextBox.Reference.Text);
             };
         }
-        return Task.FromResult<FrameworkElement>(_previewTextBox);
+        return Task.FromResult<PreviewResult>(_previewTextBox.Reference);
     }
 }

@@ -10,6 +10,8 @@ namespace SongProjector.Preview
             this.InitializeComponent();
         }
 
+        public int Index { get; set; }
+
         public FrameworkElement PreviewContent
         {
             get => (FrameworkElement)PreviewPresenter.Content;

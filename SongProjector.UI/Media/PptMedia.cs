@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using SongProjector.Presentation;
+using SongProjector.Preview;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -39,11 +40,12 @@ namespace SongProjector.Media
         public override int SlideCount
             => _presentation.Slides.Count;
 
-        public Task<FrameworkElement> GeneratePresentationAsync(int slideId, Size? size)
+        public Task<FrameworkElement> GeneratePresentationAsync(RenderContext context)
             => throw new NotImplementedException();
 
-        public Task<FrameworkElement> GeneratePreviewAsync(int slideId)
+        public Task<PreviewResult> GeneratePreviewAsync(RenderContext context)
         {
+            var slideId = context.SlideId;
             var tempFilePath = Path.GetTempFileName();
             _presentation.Slides[slideId + 1].Export(tempFilePath, "jpg", 160, 90);
 
@@ -52,7 +54,7 @@ namespace SongProjector.Media
 
             // ToDo: System.IO.File.Delete(tempFilePath);
 
-            return Task.FromResult<FrameworkElement>(result);
+            return Task.FromResult<PreviewResult>(result);
         }
 
         public void Show()

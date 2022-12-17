@@ -52,6 +52,7 @@ namespace SongProjector.Presentation
                     HasWin32Frame = false,
                     IsTopMost = true
                 });
+                App.FixWin2D(_window);
                 _window.Activate();
 
                 _presentation = new();
