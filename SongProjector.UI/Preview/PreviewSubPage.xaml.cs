@@ -1,4 +1,6 @@
-﻿using SongProjector.Media;
+﻿#nullable enable
+
+using SongProjector.Media;
 using SongProjector.UI;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,8 +16,8 @@ namespace SongProjector.Preview
             this.InitializeComponent();
         }
 
-        IMedia _currentMedia;
-        internal IMedia CurrentMedia
+        IMedia? _currentMedia;
+        internal IMedia? CurrentMedia
         {
             get => _currentMedia;
             set
@@ -29,6 +31,9 @@ namespace SongProjector.Preview
         async void GeneratePreviewItems()
         {
             PreviewItems.Clear();
+
+            if (CurrentMedia == null)
+                return;
 
             await Task.WhenAll(Enumerable.Range(0, CurrentMedia.SlideCount).Select(async (i) =>
             {

@@ -30,7 +30,7 @@ namespace SongProjector.Media
             MediaPlayerElement playerEle = new();
             playerEle.Source = MediaSource.CreateFromStorageFile(File);
 
-            playerRefs.Add(new(Window.Current.Dispatcher, playerEle.MediaPlayer));
+            playerRefs.Add(DispatchableReference<MediaPlayer>.Create(playerEle.MediaPlayer, Window.Current.Dispatcher));
 
             return Task.FromResult<FrameworkElement>(playerEle);
         }
@@ -44,17 +44,17 @@ namespace SongProjector.Media
             control.Play += () =>
             {
                 foreach (var playerRef in playerRefs)
-                    playerRef.BeginInvoke((player) => player.Play());
+                    playerRef.Do((player) => player.Play());
             };
             control.Pause += () =>
             {
                 foreach (var playerRef in playerRefs)
-                    playerRef.BeginInvoke((player) => player.Pause());
+                    playerRef.Do((player) => player.Pause());
             };
             control.Stop += () =>
             {
                 foreach (var playerRef in playerRefs)
-                    playerRef.BeginInvoke((player) =>
+                    playerRef.Do((player) =>
                     {
                         player.Pause();
                         player.PlaybackSession.Position = TimeSpan.FromMilliseconds(0);

@@ -149,12 +149,16 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <muxc:NavigationViewItemHeader Content="Schedule" />
-                <ListView x:Name="ScheduleListView" SelectionMode="Single"
-                          CanReorderItems="True"
-                          CanDragItems="True"
-                          AllowDrop="True"
+                <ListView x:Name="ScheduleListView" SelectionMode="Single" SelectionChanged="ScheduleListView_SelectionChanged"
+                        CanReorderItems="True"
+                        CanDragItems="True"
+                        AllowDrop="True"
                         Grid.Row="1">
-                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate xmlns:media="using:SongProjector.Media" x:DataType="media:IMedia">
+                            <TextBlock Text="{x:Bind DisplayName}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </Grid>
             <Grid Grid.Column="1" Margin="5,10,0,0" ScrollViewer.VerticalScrollMode="Auto">

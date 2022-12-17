@@ -1,9 +1,10 @@
-﻿using System;
+﻿#nullable enable
 
-namespace SongProjector.Media
+using System;
+
+namespace SongProjector.Media;
+
+public interface IMediaDisposable : IDisposable
 {
-    public interface IMediaDisposable : IDisposable
-    {
-        event Action OnDispose;
-    }
+    event Action? OnDispose;
 }

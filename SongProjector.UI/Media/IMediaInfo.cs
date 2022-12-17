@@ -1,10 +1,10 @@
 ﻿using Windows.Storage;
 
-namespace SongProjector.Media
+namespace SongProjector.Media;
+
+public interface IMediaInfo
 {
-    public interface IMediaInfo
-    {
-        StorageFile File { get; }
-        int SlideCount { get; }
-    }
+    StorageFile File { get; }
+    string DisplayName { get; }
+    int SlideCount { get; }
 }
