@@ -44,7 +44,7 @@ internal class SongMedia : MediaBase, IMedia
         => _songBeamerFile.Sections.Count;
     public async Task<PresentationResult> GeneratePresentationAsync(RenderContext context)
     {
-        var dpi = DisplayInformation.GetForCurrentView().RawDpiX;
+        var dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
 
         Image image = new();
         image.Source = await RenderTextSlideAsync(_songBeamerFile.Sections[context.SlideId]?.GetContent() ?? "", context.Size, dpi);
