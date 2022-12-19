@@ -1,4 +1,6 @@
-﻿using ShortDev.Uwp.FullTrust.Xaml;
+﻿#nullable enable
+
+using ShortDev.Uwp.FullTrust.Xaml;
 using ShortDev.Windows.Uwp.Presentation;
 using System;
 using System.Linq;
@@ -8,6 +10,7 @@ using Windows.Devices.Display;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using WinUI.Interop.CoreWindow;
 
 namespace SongProjector.Presentation
@@ -37,7 +40,9 @@ namespace SongProjector.Presentation
         public IPresentation? Presentation
             => _presentation;
 
-        Window _window;
+        public Brush? Background { get; }
+
+        Window? _window;
         public void Start()
         {
             if (_window != null)
@@ -57,9 +62,10 @@ namespace SongProjector.Presentation
 
                 _presentation = new();
                 _window.Content = _presentation;
+                _presentation.Background = Background;
 
                 AeroPeak.DisableForWindow(_window);
-                
+
                 // _window.GetSubclass().WindowPrivate.MoveWindow((int)_displayBounds.X, (int)_diplayBounds.Y, (int)_displayBounds.Width, (int)_displayBounds.Height);
                 const int SWP_NOACTIVATE = 0x0010;
                 const int SWP_NOZORDER = 0x0004;

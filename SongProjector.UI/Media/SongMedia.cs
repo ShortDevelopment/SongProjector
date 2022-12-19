@@ -4,7 +4,6 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Toolkit.Uwp;
-using Microsoft.UI.Xaml.Controls;
 using SongProjector.Presentation;
 using SongProjector.Preview;
 using System;
@@ -51,21 +50,22 @@ internal class SongMedia : MediaBase, IMedia
         return image;
     }
     #region Render
-    public static double OutlineThickness { get; set; } = 10;
+    public static float OutlineThicknessScalar { get; set; } = 0.08f;
+    public static double DesiredFontSize { get; set; } = 300;
     public static Color OutlineColor { get; set; } = Colors.Black;
     public static Color TextColor { get; set; } = Colors.White;
     public static CanvasHorizontalAlignment HorizontalAlignment { get; set; } = CanvasHorizontalAlignment.Center;
     public static CanvasVerticalAlignment VerticalAlignment { get; set; } = CanvasVerticalAlignment.Bottom;
-    public static float Margin { get; set; } = 10;
+    public static Vector2 MarginScalar { get; set; } = new(0.05f, 0.05f);
 
-    static CanvasTextLayout GenerateTextLayout(ICanvasResourceCreator resourceCreator, string lineContent, Size space, double desiredFontSize = 300)
+    static CanvasTextLayout GenerateTextLayout(ICanvasResourceCreator resourceCreator, string lineContent, Size space)
     {
         CanvasTextFormat format = new()
         {
             HorizontalAlignment = HorizontalAlignment,
             VerticalAlignment = VerticalAlignment,
             WordWrapping = CanvasWordWrapping.NoWrap,
-            FontSize = (float)desiredFontSize,
+            FontSize = (float)DesiredFontSize,
             FontFamily = "Inter" // "Assets/Inter-Regular.ttf#Inter"
             // await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Inter-Regular.ttf"));
         };
@@ -98,14 +98,15 @@ internal class SongMedia : MediaBase, IMedia
         {
             session.Clear(Colors.Transparent);
 
-            Vector2 position = new(Margin, Margin);
-            using (var layout = GenerateTextLayout(session, content, new Size(size.Width - Margin * 2, size.Height - Margin * 2)))
+            double mX = size.Width * MarginScalar.X, mY = size.Height * MarginScalar.Y;
+            Vector2 position = new((float)mX, (float)mY);
+            using (var layout = GenerateTextLayout(session, content, new Size(size.Width - mX * 2, size.Height - mY * 2)))
             {
-                if (OutlineThickness > 0)
+                if (OutlineThicknessScalar > 0)
                 {
                     using (var geometry = CanvasGeometry.CreateText(layout))
                     using (CanvasStrokeStyle strokeStyle = new())
-                        session.DrawGeometry(geometry, position, OutlineColor, (float)OutlineThickness, strokeStyle);
+                        session.DrawGeometry(geometry, position, OutlineColor, layout.DefaultFontSize * OutlineThicknessScalar, strokeStyle);
                 }
                 session.DrawTextLayout(layout, position, TextColor);
             }
@@ -124,9 +125,11 @@ internal class SongMedia : MediaBase, IMedia
     public async Task<PreviewResult> GeneratePreviewAsync(RenderContext context)
     {
         var content = await GeneratePresentationAsync(context);
+        var section = _songBeamerFile.Sections[context.SlideId];
         return new()
         {
-            Title = _songBeamerFile.Sections[context.SlideId].Title,
+            Title = section.Title,
+            TitleColor = section.Color,
             Content = content.Content
         };
     }
@@ -161,9 +164,10 @@ class SongBeamerFile
             {
                 bool foundTitle = false;
                 foreach (var keyword in Keywords)
-                    if (line.StartsWith(keyword))
+                    if (line.StartsWith(keyword.Key))
                     {
                         section.Title = line;
+                        section.Color = keyword.Value;
                         foundTitle = true;
                     }
                 if (foundTitle)
@@ -192,14 +196,24 @@ class SongBeamerFile
         return result;
     }
 
-    static readonly string[] Keywords = new[]
-    {
-        "Vers",
-        "Refrain",
-        "Bridge",
-        "Chorus",
-        "Intro",
-        "Outro"
+    static readonly Color VersColor = Color.FromArgb(255, 21, 101, 192);
+    static readonly Color SpecialColor = Color.FromArgb(255, 216, 67, 21);
+    static readonly Color RepetitiveColor = Color.FromArgb(255, 46, 125, 50);
+
+    static readonly Dictionary<string, Color> Keywords = new()  {
+        { "Pre-Chorus", RepetitiveColor },
+        { "Pre-Refrain", RepetitiveColor },
+        { "Pre-Brige", RepetitiveColor },
+        { "Pre-Coda", RepetitiveColor },
+        { "Refrain", RepetitiveColor },
+        { "Chorus", RepetitiveColor },
+        { "Vers", VersColor },
+        { "Intro", SpecialColor },
+        { "Bridge", SpecialColor },
+        { "Ending", SpecialColor },
+        { "Outro", SpecialColor },
+        { "Zwischenspiel", SpecialColor },
+        { "Part", SpecialColor },
     };
 
     static readonly Regex ContentLineRegex = new(@"^(#(\d) )?(<(.*):(.+)>)?(.*)$", RegexOptions.Compiled);
@@ -231,6 +245,8 @@ class SongBeamerFile
             => _file = file;
 
         public string? Title { get; set; }
+        public Color? Color { get; set; }
+
         public List<Line> Lines { get; } = new();
 
         public string GetContent(int langId = 1)

@@ -13,7 +13,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Background="#3F51B5" Padding="10" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+        <Grid Background="{x:Bind TitleBrush}" Padding="10" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
             <TextBlock Text="Test" Foreground="#fff" x:Name="TitlePreviewTextBlock" />
         </Grid>
         <Grid Grid.Row="1" Padding="5">

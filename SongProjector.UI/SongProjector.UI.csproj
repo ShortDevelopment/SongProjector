@@ -145,6 +145,9 @@
       <DependentUpon>PreviewSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderContext.cs" />
+    <Compile Include="UI\Dialogs\SearchSongDialog.xaml.cs">
+      <DependentUpon>SearchSongDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Preview\PreviewSubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\SearchSongDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -47,6 +47,7 @@ namespace SongProjector.Preview
                 {
                     Index = i,
                     Title = preview.Title ?? $"Slide {i + 1}",
+                    TitleColor = preview.TitleColor,
                     PreviewContent = preview.Content
                 };
             }));

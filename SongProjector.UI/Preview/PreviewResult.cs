@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using Windows.UI;
 using Windows.UI.Xaml;
 
 namespace SongProjector.Preview;
@@ -8,6 +9,7 @@ namespace SongProjector.Preview;
 public sealed class PreviewResult : IDisposable
 {
     public string? Title { get; init; }
+    public Color? TitleColor { get; init; }
 
     public FrameworkElement? Content { get; init; }
 

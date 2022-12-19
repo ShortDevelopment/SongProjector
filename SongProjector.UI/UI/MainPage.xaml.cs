@@ -2,6 +2,7 @@
 
 using SongProjector.Media;
 using SongProjector.Presentation;
+using SongProjector.UI.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -25,6 +26,12 @@ public sealed partial class MainPage : Page
     internal static PresentationManager PresentationManager { get; private set; }
 
     #region Command Bar
+    private async void OpenSearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        SearchSongDialog dialog = new();
+        await dialog.ShowAsync();
+    }
+
     private async void StartPresentationButton_Click(object sender, RoutedEventArgs e)
     {
         if (PresentationManager == null)
