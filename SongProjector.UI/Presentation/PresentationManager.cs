@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Display;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using WinUI.Interop.CoreWindow;
@@ -31,7 +32,13 @@ namespace SongProjector.Presentation
         }
 
         public static async Task<PresentationManager> CreateAsync()
-            => await CreateForScreenAsync((await Screen.GetScreensAsync()).Where((x) => !x.IsPrimary).First());
+        {
+            var screens = await Screen.GetScreensAsync();
+            return await CreateForScreenAsync(screens.Where((x) => !x.IsPrimary).FirstOrDefault() ?? screens.First());
+        }
+
+        public static async Task<PresentationManager> CreateForScreenAsync(int screenIndex)
+            => await CreateForScreenAsync((await Screen.GetScreensAsync())[screenIndex]);
 
         public static Task<PresentationManager> CreateForScreenAsync(Screen screen)
             => Task.FromResult(new PresentationManager(screen.Bounds));
@@ -40,7 +47,7 @@ namespace SongProjector.Presentation
         public IPresentation? Presentation
             => _presentation;
 
-        public Brush? Background { get; }
+        public Color Background { get; set; } = Colors.Black;
 
         Window? _window;
         public void Start()
@@ -62,7 +69,7 @@ namespace SongProjector.Presentation
 
                 _presentation = new();
                 _window.Content = _presentation;
-                _presentation.Background = Background;
+                _presentation.Background = new SolidColorBrush(Background);
 
                 AeroPeak.DisableForWindow(_window);
 

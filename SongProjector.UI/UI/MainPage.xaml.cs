@@ -4,10 +4,12 @@ using SongProjector.Media;
 using SongProjector.Presentation;
 using SongProjector.UI.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using WinUI.Interop.CoreWindow;
@@ -23,7 +25,7 @@ public sealed partial class MainPage : Page
         ScheduleListView.ItemsSource = collection;
     }
 
-    internal static PresentationManager PresentationManager { get; private set; }
+    internal static List<PresentationManager> PresentationManagers { get; } = new();
 
     #region Command Bar
     private async void OpenSearchButton_Click(object sender, RoutedEventArgs e)
@@ -34,9 +36,14 @@ public sealed partial class MainPage : Page
 
     private async void StartPresentationButton_Click(object sender, RoutedEventArgs e)
     {
-        if (PresentationManager == null)
-            PresentationManager = await PresentationManager.CreateAsync();
-        PresentationManager.Start();
+        if (PresentationManagers.Count == 0)
+        {
+            var manager = await PresentationManager.CreateForScreenAsync(1);
+            manager.Background = Colors.Green;
+            PresentationManagers.Add(manager);
+            PresentationManagers.Add(await PresentationManager.CreateForScreenAsync(2));
+        }
+        PresentationManagers.ForEach(p => p.Start());
 
         StartPresentationButton.IsEnabled = false;
         StopPresentationButton.IsEnabled = true;
@@ -44,13 +51,13 @@ public sealed partial class MainPage : Page
 
     private void BlankButton_Click(object sender, RoutedEventArgs e)
     {
-        PresentationManager?.Presentation?.Blank(PreviewPage.CurrentMedia);
+        PresentationManagers.ForEach(p => p.Presentation?.Blank(PreviewPage.CurrentMedia));
         PreviewPage.DeselectPreviewItem();
     }
 
     private void StopPresentationButton_Click(object sender, RoutedEventArgs e)
     {
-        PresentationManager.Stop();
+        PresentationManagers.ForEach(p => p.Stop());
         PreviewPage.DeselectPreviewItem();
 
         StartPresentationButton.IsEnabled = true;
@@ -134,7 +141,7 @@ public sealed partial class MainPage : Page
     async Task<StorageFile> PickFileAsync(string[] filters)
     {
         FileOpenPicker openPicker = new();
-        (openPicker as object as IInitializeWithWindow).Initialize(CoreWindowInterop.CoreWindowHwnd);
+        ((IInitializeWithWindow)(object)openPicker).Initialize(CoreWindowInterop.CoreWindowHwnd);
         openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
         foreach (var filter in filters)
             openPicker.FileTypeFilter.Add(filter);
