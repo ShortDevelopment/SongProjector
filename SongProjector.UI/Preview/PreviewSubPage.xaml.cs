@@ -2,7 +2,6 @@
 
 using SongProjector.Media;
 using SongProjector.UI;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,10 +27,10 @@ namespace SongProjector.Preview
             }
         }
 
-        public ObservableCollection<PreviewItemControl> PreviewItems { get; } = new();
         async void GeneratePreviewItems()
         {
-            PreviewItems.Clear();
+            ObservableCollection<PreviewItemControl> previewItems = new();
+            SelectionGridView.ItemsSource = previewItems;
 
             if (CurrentMedia == null)
                 return;
@@ -52,7 +51,7 @@ namespace SongProjector.Preview
                 };
             }));
             foreach (var item in items.OrderBy((x) => x.Index))
-                PreviewItems.Add(item);
+                previewItems.Add(item);
         }
 
         private void SelectionGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)

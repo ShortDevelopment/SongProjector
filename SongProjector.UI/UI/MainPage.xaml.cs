@@ -18,11 +18,11 @@ namespace SongProjector.UI;
 
 public sealed partial class MainPage : Page
 {
-    ObservableCollection<IMedia> collection = new();
+    ObservableCollection<IMedia> scheduleCollection = new();
     public MainPage()
     {
         this.InitializeComponent();
-        ScheduleListView.ItemsSource = collection;
+        ScheduleListView.ItemsSource = scheduleCollection;
     }
 
     internal static List<PresentationManager> PresentationManagers { get; } = new();
@@ -43,6 +43,7 @@ public sealed partial class MainPage : Page
             PresentationManagers.Add(manager);
             PresentationManagers.Add(await PresentationManager.CreateForScreenAsync(2));
         }
+        PreviewPage.DeselectPreviewItem();
         PresentationManagers.ForEach(p => p.Start());
 
         StartPresentationButton.IsEnabled = false;
@@ -72,14 +73,19 @@ public sealed partial class MainPage : Page
     }
 
     #region Insert
+    void InsertMedia(IMedia media)
+    {
+        scheduleCollection.Add(media);
+        ScheduleListView.SelectedItem = media;
+    }
+
     private async void InsertPdfMenuButton_Click(object sender, RoutedEventArgs e)
     {
         var file = await PickFileAsync(".pdf");
         if (file != null)
         {
             IMedia media = await PdfFileMedia.CreateFromFileAsync(file);
-            PreviewPage.CurrentMedia = media;
-            collection.Add(media);
+            InsertMedia(media);
         }
     }
 
@@ -89,8 +95,7 @@ public sealed partial class MainPage : Page
         if (file != null)
         {
             IMedia media = await PptMedia.CreateFromFileAsync(file);
-            PreviewPage.CurrentMedia = media;
-            collection.Add(media);
+            InsertMedia(media);
         }
     }
 
@@ -100,8 +105,7 @@ public sealed partial class MainPage : Page
         if (file != null)
         {
             IMedia media = await ImageMedia.CreateFromFileAsync(file);
-            PreviewPage.CurrentMedia = media;
-            collection.Add(media);
+            InsertMedia(media);
         }
     }
 
@@ -111,16 +115,14 @@ public sealed partial class MainPage : Page
         if (file != null)
         {
             IMedia media = await VideoMedia.CreateFromFileAsync(file);
-            PreviewPage.CurrentMedia = media;
-            collection.Add(media);
+            InsertMedia(media);
         }
     }
 
     private void InserTextButton_Click(object sender, RoutedEventArgs e)
     {
         IMedia media = new TextMedia();
-        PreviewPage.CurrentMedia = media;
-        collection.Add(media);
+        InsertMedia(media);
     }
 
     private async void InsertSongButton_Click(object sender, RoutedEventArgs e)
@@ -129,8 +131,7 @@ public sealed partial class MainPage : Page
         if (file != null)
         {
             IMedia media = await SongMedia.CreateFromFileAsync(file);
-            PreviewPage.CurrentMedia = media;
-            collection.Add(media);
+            InsertMedia(media);
         }
     }
     #endregion
