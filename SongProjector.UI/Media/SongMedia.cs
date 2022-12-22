@@ -156,23 +156,30 @@ class SongBeamerFile
             }
             else if (line.StartsWith("--"))
             {
-                bool newSection = line == "---";
                 if (section.Lines.Count > 0)
                     sections.Add(section);
+
                 section = new(result);
+                section.IsStandalone = (line == "---");
             }
             else
             {
-                bool foundTitle = false;
-                foreach (var keyword in Keywords)
-                    if (line.StartsWith(keyword.Key))
-                    {
-                        section.Title = line;
-                        section.Color = keyword.Value;
-                        foundTitle = true;
-                    }
-                if (foundTitle)
+                var keyword = Keywords.FirstOrDefault(x => line.StartsWith(x.Key));
+                if (keyword.Key != null)
+                {
+                    section.Title = line;
+                    section.Color = keyword.Value;
                     continue;
+                }
+                if (!section.IsStandalone)
+                {
+                    var last = sections.LastOrDefault();
+                    if (last != null)
+                    {
+                        section.Title = last.Title;
+                        section.Color = last.Color;
+                    }
+                }
 
                 var match = ContentLineRegex.Match(line);
                 if (!match.Success)
@@ -247,6 +254,7 @@ class SongBeamerFile
 
         public string? Title { get; set; }
         public Color? Color { get; set; }
+        public bool IsStandalone { get; set; } = true;
 
         public List<Line> Lines { get; } = new();
 
@@ -271,21 +279,16 @@ class SongBeamerFile
     ReadOnlyCollection<Section> GetOrderedSections(List<Section> sections)
     {
         var verseOrder = TryGetProp("VerseOrder");
-        if (verseOrder == null)
-            return sections.AsReadOnly();
-
-        List<Section> result = new();
-        foreach (var verse in verseOrder.Split(','))
+        if (verseOrder != null)
         {
-            var section = sections.FirstOrDefault(x => x.Title == verse);
-            if (section != null)
-                result.Add(section);
+            List<Section> result = new();
+            foreach (var verse in verseOrder.Split(','))
+                result.AddRange(sections.Where(x => x.Title == verse));
+
+            if (result.Count != 0)
+                return result.AsReadOnly();
         }
-
-        if (result.Count == 0)
-            return sections.AsReadOnly();
-
-        return result.AsReadOnly();
+        return sections.AsReadOnly();
     }
     #endregion
 }
