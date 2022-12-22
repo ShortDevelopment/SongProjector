@@ -13,6 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -138,7 +139,7 @@ internal class SongMedia : MediaBase, IMedia
 class SongBeamerFile
 {
     public static SongBeamerFile Parse(StorageFile file)
-        => Parse(File.ReadAllLines(file.Path));
+        => Parse(File.ReadAllText(file.Path, Encoding.GetEncoding(1252)).Split("\r\n"));
 
     public static SongBeamerFile Parse(string[] lines)
     {
@@ -275,7 +276,14 @@ class SongBeamerFile
 
         List<Section> result = new();
         foreach (var verse in verseOrder.Split(','))
-            result.Add(sections.First(x => x.Title == verse));
+        {
+            var section = sections.FirstOrDefault(x => x.Title == verse);
+            if (section != null)
+                result.Add(section);
+        }
+
+        if (result.Count == 0)
+            return sections.AsReadOnly();
 
         return result.AsReadOnly();
     }

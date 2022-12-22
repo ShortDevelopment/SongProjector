@@ -41,7 +41,7 @@ public sealed partial class MainPage : Page
             var manager = await PresentationManager.CreateForScreenAsync(1);
             manager.Background = Colors.Green;
             PresentationManagers.Add(manager);
-            PresentationManagers.Add(await PresentationManager.CreateForScreenAsync(2));
+            // PresentationManagers.Add(await PresentationManager.CreateForScreenAsync(2));
         }
         PreviewPage.DeselectPreviewItem();
         PresentationManagers.ForEach(p => p.Start());

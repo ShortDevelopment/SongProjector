@@ -1,12 +1,12 @@
 ﻿using SongProjector.UI;
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using WinUI.Interop.CoreWindow;
-using WinUI.Interop.NativeWindow;
 
 namespace SongProjector
 {
@@ -15,6 +15,7 @@ namespace SongProjector
         public App()
         {
             // this.InitializeComponent();
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
