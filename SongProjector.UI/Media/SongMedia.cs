@@ -286,6 +286,9 @@ class SongBeamerFile
             foreach (var verse in verseOrder.Split(','))
                 result.AddRange(sections.Where(x => x.Title == verse));
 
+            // Add remaining as fallback
+            result.AddRange(sections.Where(x => !result.Contains(x)));
+
             if (result.Count != 0)
                 return result.AsReadOnly();
         }
