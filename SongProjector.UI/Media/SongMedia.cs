@@ -216,6 +216,7 @@ class SongBeamerFile
         { "Refrain", RepetitiveColor },
         { "Chorus", RepetitiveColor },
         { "Vers", VersColor },
+        { "Strophe", VersColor },
         { "Intro", SpecialColor },
         { "Bridge", SpecialColor },
         { "Ending", SpecialColor },
