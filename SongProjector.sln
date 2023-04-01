@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongProjector", "SongProjec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortDev.Windows.Uwp.Presentation", "ShortDev.Windows.Uwp.Presentation\ShortDev.Windows.Uwp.Presentation.csproj", "{47D8EEA3-FBF7-463A-8C1B-2651056C0107}"
 EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "SongProjector.Package", "SongProjector.Package\SongProjector.Package.wapproj", "{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,36 @@ Global
 		{47D8EEA3-FBF7-463A-8C1B-2651056C0107}.Release|x64.Build.0 = Release|Any CPU
 		{47D8EEA3-FBF7-463A-8C1B-2651056C0107}.Release|x86.ActiveCfg = Release|Any CPU
 		{47D8EEA3-FBF7-463A-8C1B-2651056C0107}.Release|x86.Build.0 = Release|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|ARM.Build.0 = Debug|ARM
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|ARM.Deploy.0 = Debug|ARM
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|ARM64.Build.0 = Debug|ARM64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|x64.ActiveCfg = Debug|x64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|x64.Build.0 = Debug|x64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|x64.Deploy.0 = Debug|x64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|x86.ActiveCfg = Debug|x86
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|x86.Build.0 = Debug|x86
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Debug|x86.Deploy.0 = Debug|x86
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|ARM.ActiveCfg = Release|ARM
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|ARM.Build.0 = Release|ARM
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|ARM.Deploy.0 = Release|ARM
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|ARM64.ActiveCfg = Release|ARM64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|ARM64.Build.0 = Release|ARM64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|ARM64.Deploy.0 = Release|ARM64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|x64.ActiveCfg = Release|x64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|x64.Build.0 = Release|x64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|x64.Deploy.0 = Release|x64
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|x86.ActiveCfg = Release|x86
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|x86.Build.0 = Release|x86
+		{4B521E77-1CA8-4F77-8899-DFD8BEFCDD7A}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

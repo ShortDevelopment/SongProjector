@@ -1,4 +1,5 @@
-﻿using SongProjector.UI;
+﻿using Microsoft.UI.Xaml.Controls;
+using SongProjector.UI;
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -16,6 +17,12 @@ namespace SongProjector
         {
             // this.InitializeComponent();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

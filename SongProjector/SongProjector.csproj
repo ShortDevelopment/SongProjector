@@ -9,6 +9,9 @@
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,6 +24,10 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SongProjector.UI\SongProjector.UI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.VCRTForwarders.140" Version="1.0.7" />
 	</ItemGroup>
 
 </Project>

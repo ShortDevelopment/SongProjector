@@ -1,4 +1,6 @@
-﻿namespace SongProjector
+﻿using System;
+
+namespace SongProjector
 {
     internal class ProgramShim
     {

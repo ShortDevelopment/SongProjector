@@ -19,13 +19,13 @@ public sealed partial class PresentationPage : Page, IPresentation
             if (media is IExternalPresentation externalPresenation)
             {
                 ClearContent();
-                Window.Current.GetSubclass().IsTopMost = false;
+                Window.Current.GetSubclass().Win32Window.IsTopMost = false;
                 externalPresenation.Show();
                 externalPresenation.GoToSlide(slideIndex);
             }
             else
             {
-                Window.Current.GetSubclass().IsTopMost = true;
+                Window.Current.GetSubclass().Win32Window.IsTopMost = true;
                 var result = await media.GeneratePresentationAsync(new()
                 {
                     SlideId = slideIndex,
@@ -39,7 +39,7 @@ public sealed partial class PresentationPage : Page, IPresentation
     public void Blank(IMedia media)
     {
         ClearContent();
-        Window.Current.GetSubclass().IsTopMost = true;
+        Window.Current.GetSubclass().Win32Window.IsTopMost = true;
         if (media is IExternalPresentation externalPresenation)
             externalPresenation.Blank();
     }

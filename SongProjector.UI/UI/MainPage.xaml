@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SongProjector.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:localControls="using:SongProjector.UI.Controls"
-    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)" xmlns:preview="using:SongProjector.Preview"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:preview="using:SongProjector.Preview"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core" xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
-    Background="#F8F8F8">
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -72,7 +73,7 @@
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="Website" IsEnabled="False">
+                    <MenuFlyoutItem Text="Website" x:Name="InsertWebsiteButton" Click="InsertWebsiteButton_Click">
                         <MenuFlyoutItem.Icon>
                             <PathIcon Data="M12.0001 1.99805C17.5238 1.99805 22.0016 6.47589 22.0016 11.9996C22.0016 17.5233 17.5238 22.0011 12.0001 22.0011C6.47638 22.0011 1.99854 17.5233 1.99854 11.9996C1.99854 6.47589 6.47638 1.99805 12.0001 1.99805ZM14.939 16.4993H9.06118C9.71322 18.9135 10.8466 20.5011 12.0001 20.5011C13.1536 20.5011 14.2869 18.9135 14.939 16.4993ZM7.5084 16.4999L4.78591 16.4998C5.74425 18.0328 7.1777 19.2384 8.88008 19.9104C8.3578 19.0906 7.92681 18.0643 7.60981 16.8949L7.5084 16.4999ZM19.2143 16.4998L16.4918 16.4999C16.168 17.8337 15.7004 18.9995 15.119 19.9104C16.716 19.2804 18.0757 18.1814 19.0291 16.7833L19.2143 16.4998ZM7.09351 9.99895H3.7359L3.73115 10.0162C3.57906 10.6525 3.49854 11.3166 3.49854 11.9996C3.49854 13.0558 3.69112 14.0669 4.0431 14.9999L7.21626 14.9995C7.07396 14.0504 6.99854 13.0422 6.99854 11.9996C6.99854 11.3156 7.031 10.6464 7.09351 9.99895ZM15.397 9.99901H8.60316C8.53514 10.6393 8.49853 11.309 8.49853 11.9996C8.49853 13.0591 8.58468 14.0694 8.73827 14.9997H15.2619C15.4155 14.0694 15.5016 13.0591 15.5016 11.9996C15.5016 11.309 15.465 10.6393 15.397 9.99901ZM20.2647 9.99811L16.9067 9.99897C16.9692 10.6464 17.0016 11.3156 17.0016 11.9996C17.0016 13.0422 16.9262 14.0504 16.7839 14.9995L19.9571 14.9999C20.309 14.0669 20.5016 13.0558 20.5016 11.9996C20.5016 11.3102 20.4196 10.64 20.2647 9.99811ZM8.88114 4.08875L8.85823 4.09747C6.81092 4.91218 5.1549 6.49949 4.25023 8.49935L7.29835 8.49972C7.61171 6.74693 8.15855 5.221 8.88114 4.08875ZM12.0001 3.49805L11.8844 3.50335C10.619 3.6191 9.39651 5.62107 8.8288 8.4993H15.1714C14.6052 5.62914 13.388 3.63033 12.1264 3.50436L12.0001 3.49805ZM15.1201 4.08881L15.2269 4.2629C15.8961 5.37537 16.4043 6.83525 16.7018 8.49972L19.7499 8.49935C18.8853 6.58795 17.3343 5.05341 15.4113 4.21008L15.1201 4.08881Z" />
                         </MenuFlyoutItem.Icon>
@@ -113,6 +114,9 @@
                     <AppBarSeparator />
                     <AppBarButton ToolTipService.ToolTip="Start Presentation" Label="Start"
                                   x:Name="StartPresentationButton" Click="StartPresentationButton_Click">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F5" />
+                        </AppBarButton.KeyboardAccelerators>
                         <AppBarButton.Icon>
                             <PathIcon Data="M7.60846 4.61489C7.1087 4.34296 6.5 4.70472 6.5 5.27368V18.726C6.5 19.2949 7.1087 19.6567 7.60846 19.3848L19.97 12.6586C20.4921 12.3746 20.4921 11.6251 19.97 11.341L7.60846 4.61489ZM5 5.27368C5 3.56682 6.82609 2.48151 8.32538 3.2973L20.687 10.0235C22.2531 10.8756 22.2531 13.124 20.687 13.9762L8.32538 20.7024C6.82609 21.5181 5 20.4328 5 18.726V5.27368Z" />
                         </AppBarButton.Icon>
@@ -123,6 +127,9 @@
                         </AppBarButton.Icon>
                     </AppBarButton>
                     <AppBarButton ToolTipService.ToolTip="Blank" LabelPosition="Collapsed" x:Name="BlankButton" Click="BlankButton_Click">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="B" />
+                        </AppBarButton.KeyboardAccelerators>
                         <AppBarButton.Icon>
                             <PathIcon Data="M23 6.5C23 9.53757 20.5376 12 17.5 12C14.4624 12 12 9.53757 12 6.5C12 3.46243 14.4624 1 17.5 1C20.5376 1 23 3.46243 23 6.5ZM15.8536 4.14645C15.6583 3.95118 15.3417 3.95118 15.1464 4.14645C14.9512 4.34171 14.9512 4.65829 15.1464 4.85355L16.7929 6.5L15.1464 8.14645C14.9512 8.34171 14.9512 8.65829 15.1464 8.85355C15.3417 9.04882 15.6583 9.04882 15.8536 8.85355L17.5 7.20711L19.1464 8.85355C19.3417 9.04882 19.6583 9.04882 19.8536 8.85355C20.0488 8.65829 20.0488 8.34171 19.8536 8.14645L18.2071 6.5L19.8536 4.85355C20.0488 4.65829 20.0488 4.34171 19.8536 4.14645C19.6583 3.95118 19.3417 3.95118 19.1464 4.14645L17.5 5.79289L15.8536 4.14645ZM19.5 13.25V12.6865C20.0335 12.5142 20.5368 12.2747 21 11.9782V13.25C21 15.3211 19.3211 17 17.25 17H12.75V19.5H16.25C16.6642 19.5 17 19.8358 17 20.25C17 20.6642 16.6642 21 16.25 21H7.75C7.33579 21 7 20.6642 7 20.25C7 19.8358 7.33579 19.5 7.75 19.5H11.25V17H6.75C4.67893 17 3 15.3211 3 13.25V5.91465C2.4174 5.70873 2 5.15311 2 4.5C2 3.67157 2.67157 3 3.5 3H12.0218C11.4594 3.8784 11.1025 4.90101 11.0189 6H4.5V13.25C4.5 14.4926 5.50736 15.5 6.75 15.5H17.25C18.4926 15.5 19.5 14.4926 19.5 13.25Z" />
                         </AppBarButton.Icon>
@@ -161,13 +168,52 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
-            <Grid Grid.Column="1" Margin="5,10,0,0" ScrollViewer.VerticalScrollMode="Auto">
-                <Grid Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8,0,0,0">
+            <Grid Grid.Column="1" Margin="5,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid ScrollViewer.VerticalScrollMode="Auto" x:Name="PreviewPageContainer"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="ControlPreviewStates">
+                            <VisualState x:Name="Extended">
+                                <VisualState.Setters>
+                                    <Setter Target="PreviewPageContainer.BorderThickness" Value="1,1,0,1" />
+                                    <Setter Target="PreviewPageContainer.CornerRadius" Value="8,0,0,8" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Collapsed">
+                                <VisualState.Setters>
+                                    <Setter Target="PreviewPageContainer.BorderThickness" Value="1,1,0,0" />
+                                    <Setter Target="PreviewPageContainer.CornerRadius" Value="8,0,0,0" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <!--<Interactivity:Interaction.Behaviors>
+                        <Core:DataTriggerBehavior Binding="{x:Bind BottomCardGrid.Visibility}" Value="Visible">
+                            <Core:GoToStateAction StateName="Extended" />
+                        </Core:DataTriggerBehavior>
+                        <Core:DataTriggerBehavior Binding="{x:Bind BottomCardGrid.Visibility}" Value="Collapsed">
+                            <Core:GoToStateAction StateName="Collapsed" />
+                        </Core:DataTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>-->
                     <preview:PreviewSubPage x:Name="PreviewPage" />
                 </Grid>
-                <Grid VerticalAlignment="Bottom" Padding="10" Visibility="Collapsed"
-                    Background="White" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="2" CornerRadius="8,8,0,0">
-                    <MediaPlayerElement AreTransportControlsEnabled="True" MaxHeight="200" />
+                <Grid VerticalAlignment="Bottom" Padding="10" Grid.Row="1" Margin="0,10,0,0" MinHeight="100" x:Name="BottomCardGrid"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1,1,0,0" CornerRadius="8,0,0,0">
+                    <!--<ContentPresenter x:Name="ControlPreviewItemContainer" />-->
+                    <StackPanel>
+                        <Button Content="Browse" x:Name="BrowseMediaButton" Click="BrowseMediaButton_Click" />
+                        <MediaPlayerElement x:Name="MediaPlayerEle" AutoPlay="False" AreTransportControlsEnabled="True" />
+                    </StackPanel>
+                    <AppBarButton x:Name="DismissControlPreviewButton" Click="DismissControlPreviewButton_Click"
+                        LabelPosition="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <AppBarButton.Icon>
+                            <PathIcon Data="M22.4697 4.46967C22.7626 4.17678 23.2374 4.17678 23.5303 4.46967C23.8232 4.76256 23.8232 5.23744 23.5303 5.53033L15.0607 14L23.5303 22.4697C23.8232 22.7626 23.8232 23.2374 23.5303 23.5303C23.2374 23.8232 22.7626 23.8232 22.4697 23.5303L14 15.0607L5.53033 23.5303C5.23744 23.8232 4.76256 23.8232 4.46967 23.5303C4.17678 23.2374 4.17678 22.7626 4.46967 22.4697L12.9393 14L4.46967 5.53033C4.17678 5.23744 4.17678 4.76256 4.46967 4.46967C4.76256 4.17678 5.23744 4.17678 5.53033 4.46967L14 12.9393L22.4697 4.46967Z" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                 </Grid>
             </Grid>
         </Grid>

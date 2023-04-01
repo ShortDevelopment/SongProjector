@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.Media.Core;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI;
@@ -38,10 +39,10 @@ public sealed partial class MainPage : Page
     {
         if (PresentationManagers.Count == 0)
         {
-            var manager = await PresentationManager.CreateForScreenAsync(1);
+            var manager = await PresentationManager.CreateForScreenAsync(2);
             manager.Background = Colors.Green;
             PresentationManagers.Add(manager);
-            // PresentationManagers.Add(await PresentationManager.CreateForScreenAsync(2));
+            PresentationManagers.Add(await PresentationManager.CreateForScreenAsync(1));
         }
         PreviewPage.DeselectPreviewItem();
         PresentationManagers.ForEach(p => p.Start());
@@ -99,6 +100,12 @@ public sealed partial class MainPage : Page
         }
     }
 
+    private void InsertWebsiteButton_Click(object sender, RoutedEventArgs e)
+    {
+        IMedia media = new WebMedia();
+        InsertMedia(media);
+    }
+
     private async void InsertImageButton_Click(object sender, RoutedEventArgs e)
     {
         var file = await PickFileAsync(new[] { ".jpg", ".jpeg", ".png" });
@@ -152,5 +159,19 @@ public sealed partial class MainPage : Page
     private void ScheduleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         PreviewPage.CurrentMedia = ScheduleListView.SelectedItem as IMedia;
+    }
+
+    private void DismissControlPreviewButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private async void BrowseMediaButton_Click(object sender, RoutedEventArgs e)
+    {
+        var file = await PickFileAsync(new[] { ".wma", ".mp3" });
+        if (file != null)
+        {
+            MediaPlayerEle.Source = MediaSource.CreateFromStorageFile(file);
+        }
     }
 }
